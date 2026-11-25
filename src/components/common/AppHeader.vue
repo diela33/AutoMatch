@@ -15,7 +15,12 @@ const toggleMenu = () => {
 <template>
   <header class="app-header">
     <nav class="navbar" aria-label="Основна навигация">
-      <RouterLink class="brand" to="/" aria-label="AutoMatch начало" @click="closeMenu">
+      <RouterLink
+        class="brand"
+        to="/"
+        aria-label="AutoMatch начало"
+        @click="closeMenu"
+      >
         <span class="brand-mark" aria-hidden="true">
           <span class="brand-road"></span>
         </span>
@@ -27,7 +32,7 @@ const toggleMenu = () => {
         type="button"
         :aria-expanded="isMenuOpen"
         aria-controls="main-navigation"
-        aria-label="Отвори навигацията"
+        :aria-label="isMenuOpen ? 'Затвори навигацията' : 'Отвори навигацията'"
         @click="toggleMenu"
       >
         <span :class="{ open: isMenuOpen }"></span>
@@ -49,18 +54,38 @@ const toggleMenu = () => {
           >
             Начало
           </RouterLink>
-          <a class="nav-link" href="#automobiles" @click.prevent="closeMenu">
+          <RouterLink
+            class="nav-link"
+            active-class="nav-link-active"
+            to="/cars"
+            @click="closeMenu"
+          >
             Автомобили
-          </a>
-          <a class="nav-link" href="#parts" @click.prevent="closeMenu">
+          </RouterLink>
+          <RouterLink
+            class="nav-link"
+            active-class="nav-link-active"
+            to="/parts"
+            @click="closeMenu"
+          >
             Части
-          </a>
-          <a class="nav-link" href="#about" @click.prevent="closeMenu">
-            За нас
-          </a>
-          <a class="nav-link" href="#contacts" @click.prevent="closeMenu">
+          </RouterLink>
+          <RouterLink
+            class="nav-link"
+            active-class="nav-link-active"
+            to="/about"
+            @click="closeMenu"
+          >
+            За платформата
+          </RouterLink>
+          <RouterLink
+            class="nav-link"
+            active-class="nav-link-active"
+            to="/contacts"
+            @click="closeMenu"
+          >
             Контакти
-          </a>
+          </RouterLink>
         </div>
 
         <div class="auth-actions">
