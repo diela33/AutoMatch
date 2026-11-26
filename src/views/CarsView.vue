@@ -1,10 +1,30 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+import CarCard from '../components/cars/CarCard.vue'
+import { getAllCars } from '../services/carService'
+
 const categories = [
   { name: 'SUV', detail: 'Пространство и висока позиция', icon: 'SUV' },
   { name: 'Sedan', detail: 'Комфорт и практичност', icon: 'SED' },
   { name: 'Hatchback', detail: 'Компактност за градско пътуване', icon: 'HAT' },
   { name: 'Coupe', detail: 'Спортен стил и динамичен характер', icon: 'COU' },
 ]
+
+const cars = ref([])
+const loading = ref(true)
+const error = ref('')
+
+async function loadCars() {
+  try {
+    cars.value = await getAllCars()
+  } catch {
+    error.value = 'Не успяхме да заредим автомобилите. Моля, опитай отново по-късно.'
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(loadCars)
 </script>
 
 <template>
@@ -33,12 +53,21 @@ const categories = [
         </article>
       </div>
 
-      <div class="catalog-placeholder">
-        <span class="placeholder-icon" aria-hidden="true">⌕</span>
-        <h2>Автомобилните обяви предстоят</h2>
-        <p>
-          Каталогът ще бъде свързан със SoftUni Practice Server на следващ етап.
-        </p>
+      <div v-if="loading" class="catalog-placeholder" role="status">
+        <h2>Зареждаме автомобилите...</h2>
+      </div>
+
+      <div v-else-if="error" class="catalog-placeholder catalog-error" role="alert">
+        <h2>{{ error }}</h2>
+      </div>
+
+      <div v-else-if="cars.length === 0" class="catalog-placeholder">
+        <h2>Няма публикувани автомобили</h2>
+        <p>Провери отново по-късно за нови предложения.</p>
+      </div>
+
+      <div v-else class="cars-grid" aria-label="Обяви за автомобили">
+        <CarCard v-for="car in cars" :key="car._id" :car="car" />
       </div>
     </section>
   </main>
@@ -208,6 +237,18 @@ h1 {
   margin: 0 auto;
   color: #68738a;
   line-height: 1.6;
+}
+
+.catalog-error {
+  border-color: #e8b4b4;
+  color: #9c2f2f;
+}
+
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 @media (max-width: 760px) {
