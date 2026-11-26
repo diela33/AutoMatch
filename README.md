@@ -1,44 +1,152 @@
-# .
+# AutoMatch
 
-This template should help get you started developing with Vue 3 in Vite.
+## Project Overview
 
-## Recommended IDE Setup
+AutoMatch is a Vue 3 single-page application for browsing car listings. It uses the SoftUni Practice Server as its REST backend. The current client loads the cars collection and displays the returned listings; it does not provide listing-management forms.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Features
 
-## Recommended Browser Setup
+- Routed pages for Home, Cars, Parts, About, and Contacts.
+- Responsive site header, navigation menu, and footer.
+- A Cars page that requests `GET /data/cars` and displays loading, error, and empty states.
+- Car cards that display available image, brand, model, year, price, category, and description fields.
+- A backend Collections service with generic read and authenticated create, update, and delete operations.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+The current frontend does not implement car search, filtering, sorting, detail pages, or CRUD forms. Login and registration controls are present in the header, but are not connected to authentication forms or routes. The router has no authentication guards.
 
-## Customize configuration
+## Technologies Used
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Vue 3 Composition API and JavaScript
+- Vue Router and Pinia
+- Axios
+- Vite
+- Node.js and the SoftUni Practice Server
 
-## Project Setup
+The frontend package requires Node.js `^22.18.0` or `>=24.12.0`. npm is required for installing dependencies.
 
-```sh
-npm install
+## Project Architecture
+
+- `client/AutoMatch` is the Vue SPA. `src/router` defines page routes, `src/services` contains Axios and API services, and `src/stores` contains Pinia stores.
+- `server/SoftUni-Practice-Server` is the supplied Node.js REST server. It serves the Collections API, authentication endpoints, and its admin panel.
+- The frontend uses the shared Axios instance in `src/services/api.js`. Its base URL comes from `VITE_API_URL`; `src/services/carService.js` requests `/data/cars`.
+- The server loads `seedData` from its local `settings.json` into in-memory storage at startup. It does not use a database.
+
+## Folder Structure
+
+```text
+AutoMatch-migration/
+├── src/                         (original client files remain here during this copy stage)
+├── public/
+├── package.json
+├── client/
+│   └── AutoMatch/
+│       ├── public/
+│       ├── src/
+│       │   ├── components/
+│       │   ├── router/
+│       │   ├── services/
+│       │   ├── stores/
+│       │   └── views/
+│       ├── .env.example
+│       └── package.json
+├── server/
+│   └── SoftUni-Practice-Server/
+│       ├── client/
+│       ├── data/
+│       ├── src/
+│       ├── tests/
+│       ├── settings.example.json
+│       ├── settings.json  (generated locally; excluded from Git)
+│       └── package.json
+├── .gitignore
+└── README.md
 ```
 
-### Compile and Hot-Reload for Development
+The original client files from the Git clone remain at the repository root in this first migration stage. The copy under `client/AutoMatch` was added without moving or deleting those files.
 
-```sh
+## Prerequisites
+
+- Node.js 24.15.0 or a newer release in the 24.x line for both projects.
+- The npm version bundled with the selected Node.js installation.
+- Git.
+- Use `npm ci` in each project folder to install dependencies from the lockfiles.
+- A local `settings.json` for the Practice Server. Create it from the tracked `settings.example.json`; that template contains the five AutoMatch seed cars and no pre-created users or credentials. The generated `settings.json` is intentionally excluded from Git.
+
+## Installation Instructions
+
+Install dependencies separately in the backend and frontend folders using `npm ci`. The exact setup commands are listed below.
+
+## Backend Setup
+
+Run these commands from the repository root in PowerShell:
+
+```powershell
+Set-Location server\SoftUni-Practice-Server
+npm ci
+Copy-Item settings.example.json settings.json
+npm run client
+npm run build
+npm start
+```
+
+For Windows Command Prompt, the copy command is:
+
+```cmd
+copy settings.example.json settings.json
+```
+
+Run it from `server\SoftUni-Practice-Server`; the other backend commands are the same. Keep the generated `settings.json` local. Do not commit it.
+
+The server listens at `http://localhost:3030`. The admin panel is available at `http://localhost:3030/admin`.
+
+The initial cars are loaded from `seedData.cars` in `settings.json`. The Practice Server stores collection changes in memory. Records created or changed through `POST`, `PUT`, `PATCH`, or `DELETE` are not persisted and can be lost when the server restarts. On restart, the server initializes again from the settings seed data.
+
+## Frontend Setup
+
+Run these commands from the repository root in PowerShell:
+
+```powershell
+Set-Location client\AutoMatch
+npm ci
+Copy-Item .env.example .env
+Set-Content .env 'VITE_API_URL=http://localhost:3030'
 npm run dev
 ```
 
-### Compile and Minify for Production
+The local `.env` must contain:
 
-```sh
-npm run build
+```dotenv
+VITE_API_URL=http://localhost:3030
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+Open the Local URL printed by Vite, normally `http://localhost:5173`. For a production build, run `npm run build` from `client/AutoMatch`.
 
-```sh
-npm run lint
-```
+## Environment Configuration
+
+`VITE_API_URL` is the base URL used by the shared Axios instance. The tracked `.env.example` is a template; put the actual local value in `.env`. Both `.env` and other `.env.*` files are ignored, while `.env.example` remains eligible for Git.
+
+## API Communication
+
+The Cars view calls `getAllCars()` from `src/services/carService.js`. That service sends `GET /data/cars` through the Axios instance configured in `src/services/api.js`. The backend exposes the Collections API under `/data/:collection`.
+
+The frontend currently performs a read request for cars only. Although the server supports additional collection operations, the AutoMatch client does not currently submit create, update, or delete requests.
+
+## Authentication
+
+The Practice Server provides `POST /users/register`, `POST /users/login`, `GET /users/logout`, and `GET /users/me`. Authorized requests use the `X-Authorization` header.
+
+The settings template has empty `users` and `sessions` collections. The examiner should register their own account using `POST /users/register` through an API client, then use the returned access token in the `X-Authorization` header for protected requests. The client has helper functions in `src/services/authService.js` and a Pinia auth store that saves the user and access token in `localStorage`, but these helpers are not connected to working login or registration forms; the header buttons do not authenticate users, and there are no protected routes.
+
+After registering, create car listings as that user with `POST /data/cars`. The server assigns the authenticated user's ID as the listing owner, so the examiner can test the owner's `GET`, `PUT`/`PATCH`, and `DELETE` operations on their own listings. These operations are API-level checks; the current frontend has no CRUD forms.
+
+## Testing Instructions
+
+1. Start the backend and open `http://localhost:3030/data/cars`. Confirm that the five seed cars from `settings.json` are returned.
+2. Start the frontend and open the Cars page from the navigation. Confirm that the returned listings appear in cards.
+3. Register a personal test account through `POST /users/register`, then use its token to create, update, and delete one of your own listings through the Collections API.
+4. If the backend is unavailable, confirm that the Cars page shows its error state. If the collection is empty, confirm that it shows the empty state.
+5. To check frontend compilation, run `npm run build` in `client/AutoMatch`.
+
+## License and Credits
+
+The backend is the SoftUni Practice Server, distributed under the MIT License. Its original [`LICENSE`](server/SoftUni-Practice-Server/LICENSE) and project documentation are retained in the server folder. The copied server README omits sample account credentials; the original copyright and license notice remains with the server files. See the [upstream repository](https://github.com/softuni-practice-server/softuni-practice-server).

@@ -1,0 +1,78 @@
+{
+    "identity":  "email",
+    "protectedData":  {
+                          "users":  {
+
+                                    },
+                          "sessions":  {
+
+                                       }
+                      },
+    "seedData":  {
+                     "cars":  {
+                                  "8b7c5d79-e43b-41ae-9b01-e3153b96265f":  {
+                                                                               "brand":  "Toyota",
+                                                                               "model":  "RAV4",
+                                                                               "year":  2021,
+                                                                               "price":  24900,
+                                                                               "category":  "SUV",
+                                                                               "fuel":  "Hybrid",
+                                                                               "transmission":  "Automatic",
+                                                                               "mileage":  58400,
+                                                                               "description":  "Family SUV with hybrid drive and comfortable equipment.",
+                                                                               "imageUrl":  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format\u0026fit=crop\u0026w=1200\u0026q=80"
+                                                                           },
+                                  "55c08e1f-10c6-4ba1-8895-ec845d8c06c3":  {
+                                                                               "brand":  "BMW",
+                                                                               "model":  "320d",
+                                                                               "year":  2019,
+                                                                               "price":  26500,
+                                                                               "category":  "Sedan",
+                                                                               "fuel":  "Diesel",
+                                                                               "transmission":  "Automatic",
+                                                                               "mileage":  91200,
+                                                                               "description":  "Diesel sedan with automatic transmission and a comfortable interior.",
+                                                                               "imageUrl":  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format\u0026fit=crop\u0026w=1200\u0026q=80"
+                                                                           },
+                                  "9eebc262-9594-4c40-85f1-fba0dfdd5d08":  {
+                                                                               "brand":  "Volkswagen",
+                                                                               "model":  "Golf",
+                                                                               "year":  2022,
+                                                                               "price":  19900,
+                                                                               "category":  "Hatchback",
+                                                                               "fuel":  "Petrol",
+                                                                               "transmission":  "Manual",
+                                                                               "mileage":  36700,
+                                                                               "description":  "Compact hatchback suited to city driving and everyday trips.",
+                                                                               "imageUrl":  "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format\u0026fit=crop\u0026w=1200\u0026q=80"
+                                                                           },
+                                  "2051b75e-93e9-49d4-a580-97e7ba81209c":  {
+                                                                               "brand":  "Audi",
+                                                                               "model":  "A5",
+                                                                               "year":  2018,
+                                                                               "price":  28500,
+                                                                               "category":  "Coupe",
+                                                                               "fuel":  "Petrol",
+                                                                               "transmission":  "Automatic",
+                                                                               "mileage":  74800,
+                                                                               "description":  "Elegant coupe with a petrol engine and automatic transmission.",
+                                                                               "imageUrl":  "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format\u0026fit=crop\u0026w=1200\u0026q=80"
+                                                                           },
+                                  "26e823b3-dcc3-417f-9576-cb971d653079":  {
+                                                                               "brand":  "Volvo",
+                                                                               "model":  "XC60",
+                                                                               "year":  2021,
+                                                                               "price":  34900,
+                                                                               "category":  "SUV",
+                                                                               "fuel":  "Diesel",
+                                                                               "transmission":  "Automatic",
+                                                                               "mileage":  52600,
+                                                                               "description":  "Spacious SUV with a diesel engine and a focus on comfort.",
+                                                                               "imageUrl":  "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format\u0026fit=crop\u0026w=1200\u0026q=80"
+                                                                           }
+                              }
+                 },
+    "rules":  {
+
+              }
+}

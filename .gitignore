@@ -1,44 +1,42 @@
-# Logs
-logs
-*.log
+# Dependencies and build output
+**/node_modules/
+**/dist/
+**/dist-ssr/
+
+# Environment files
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local server settings include authentication fixture hashes
+server/SoftUni-Practice-Server/settings.json
+
+# Logs, caches, and test output
+**/logs/
+**/*.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
+yarn-error.log*
 lerna-debug.log*
+**/coverage/
+**/.nyc_output/
+**/.eslintcache
+**/*.local
+**/*.timestamp-*-*.mjs
+**/__screenshots__/
+**/cypress/videos/
+**/cypress/screenshots/
 
-node_modules
-.DS_Store
-dist
-dist-ssr
-coverage
-*.local
+# Operating system files
+**/.DS_Store
+**/Thumbs.db
 
-# Environment variables
-.env
-.env.*
-!.env.example
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Editor files
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
 *.tsbuildinfo
-
-.eslintcache
-
-# Cypress
-/cypress/videos/
-/cypress/screenshots/
-
-# Vitest
-__screenshots__/
-
-# Vite
-*.timestamp-*-*.mjs
