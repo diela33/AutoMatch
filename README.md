@@ -69,33 +69,38 @@ The original client files from the Git clone remain at the repository root in th
 - Node.js 24.15.0 or a newer release in the 24.x line for both projects.
 - The npm version bundled with the selected Node.js installation.
 - Git.
-- Use `npm ci` in each project folder to install dependencies from the lockfiles.
+- Install dependencies from each project's lockfile before running it.
 - A local `settings.json` for the Practice Server. Create it from the tracked `settings.example.json`; that template contains the five AutoMatch seed cars and no pre-created users or credentials. The generated `settings.json` is intentionally excluded from Git.
 
 ## Installation Instructions
 
-Install dependencies separately in the backend and frontend folders using `npm ci`. The exact setup commands are listed below.
+Install dependencies separately in the backend and frontend folders. The exact setup commands are listed below.
 
 ## Backend Setup
 
-Run these commands from the repository root in PowerShell:
+Run these commands from the repository root in PowerShell. If `settings.json`
+already exists, it is preserved and is not overwritten.
 
 ```powershell
 Set-Location server\SoftUni-Practice-Server
 npm ci
-Copy-Item settings.example.json settings.json
+
+if (-not (Test-Path .\settings.json)) {
+    Copy-Item .\settings.example.json .\settings.json
+}
+
 npm run client
 npm run build
 npm start
 ```
 
-For Windows Command Prompt, the copy command is:
+For Windows Command Prompt, run this from `server\SoftUni-Practice-Server`:
 
 ```cmd
-copy settings.example.json settings.json
+if not exist settings.json copy settings.example.json settings.json
 ```
 
-Run it from `server\SoftUni-Practice-Server`; the other backend commands are the same. Keep the generated `settings.json` local. Do not commit it.
+Keep the generated `settings.json` local. Do not commit it.
 
 The server listens at `http://localhost:3030`. The admin panel is available at `http://localhost:3030/admin`.
 
@@ -108,18 +113,26 @@ Run these commands from the repository root in PowerShell:
 ```powershell
 Set-Location client\AutoMatch
 npm ci
-Copy-Item .env.example .env
-Set-Content .env 'VITE_API_URL=http://localhost:3030'
+
+if (-not (Test-Path .\.env)) {
+    $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+    [System.IO.File]::WriteAllText(
+        '.env',
+        'VITE_API_URL=http://localhost:3030',
+        $utf8NoBom
+    )
+}
+
 npm run dev
 ```
 
 The local `.env` must contain:
 
-```dotenv
+```text
 VITE_API_URL=http://localhost:3030
 ```
 
-Open the Local URL printed by Vite, normally `http://localhost:5173`. For a production build, run `npm run build` from `client/AutoMatch`.
+Open the Local URL printed by Vite, normally `http://localhost:5173`. For a production build, use the build command in Testing Instructions.
 
 ## Environment Configuration
 
@@ -145,7 +158,12 @@ After registering, create car listings as that user with `POST /data/cars`. The 
 2. Start the frontend and open the Cars page from the navigation. Confirm that the returned listings appear in cards.
 3. Register a personal test account through `POST /users/register`, then use its token to create, update, and delete one of your own listings through the Collections API.
 4. If the backend is unavailable, confirm that the Cars page shows its error state. If the collection is empty, confirm that it shows the empty state.
-5. To check frontend compilation, run `npm run build` in `client/AutoMatch`.
+5. To check frontend compilation, run these commands from the repository root in PowerShell:
+
+   ```powershell
+   Set-Location client\AutoMatch
+   npm run build
+   ```
 
 ## License and Credits
 
